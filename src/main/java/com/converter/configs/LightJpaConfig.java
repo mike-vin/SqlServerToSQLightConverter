@@ -2,6 +2,7 @@ package com.converter.configs;
 
 import com.converter.Main;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -22,16 +23,18 @@ import javax.sql.DataSource;
 @Component
 @EnableJpaRepositories(
         transactionManagerRef = "lightJpaTransactionManager",
-        basePackages = {"com.converter.persistence.dao"})
+        basePackages = {"com.converter.persistence.light"})
 @EnableTransactionManagement
-public class SqLightJDBConnector {
+public class LightJpaConfig {
+    @Value("${jpa.hibernate.dialect.sqlite}")
+    private String dialect;
 
     @Bean(name = "lightManagerFactory")
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
         emf.setDataSource(getDataSource());
         emf.setJpaVendorAdapter(getJpaVendorAdapter());
-        emf.setPersistenceUnitName("com.converter.persistence.dao");
+        emf.setPersistenceUnitName("com.converter.persistence.light");
         emf.setPackagesToScan("com.converter.model");
         return emf;
     }
@@ -40,8 +43,9 @@ public class SqLightJDBConnector {
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         vendorAdapter.setDatabase(Database.DEFAULT);
         vendorAdapter.setShowSql(true);
-        vendorAdapter.setDatabasePlatform("com.enigmabridge.hibernate.dialect.SQLiteDialect");
+        vendorAdapter.setDatabasePlatform(dialect);
         vendorAdapter.setGenerateDdl(true);
+        vendorAdapter.setPrepareConnection(false);
         return vendorAdapter;
     }
 

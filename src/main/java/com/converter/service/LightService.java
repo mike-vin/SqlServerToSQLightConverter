@@ -4,32 +4,31 @@ import com.converter.dto.CityDto;
 import com.converter.dto.StationDto;
 import com.converter.model.CityEntity;
 import com.converter.model.StationEntity;
-import com.converter.persistence.dao.SqLightCityRepository;
-import com.converter.persistence.dao.SqLightStationRepository;
+import com.converter.persistence.light.LightCityRepository;
+import com.converter.persistence.light.LightStationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 import static com.converter.util.Util.toDTOList;
 
 @Service
-@Transactional(transactionManager = "lightJpaTransactionManager")
-public class SQLightService {
-    private final SqLightCityRepository sqLightCityRepository;
-    private final SqLightStationRepository sqLightStationRepository;
+//@Transactional(transactionManager = "lightJpaTransactionManager")
+public class LightService {
+    private final LightCityRepository lightCityRepository;
+    private final LightStationRepository sqLightStationRepository;
 
     @Autowired
-    public SQLightService(SqLightCityRepository sqLightRepository, SqLightStationRepository sqLightStationRepository) {
-        this.sqLightCityRepository = sqLightRepository;
+    public LightService(LightCityRepository sqLightRepository, LightStationRepository sqLightStationRepository) {
+        this.lightCityRepository = sqLightRepository;
         this.sqLightStationRepository = sqLightStationRepository;
     }
 
     public int saveAllCities(List<CityEntity> cities) {
-        List<CityEntity> saved = sqLightCityRepository.save(cities);
-        System.out.println(String.format("cities==saved = %s", cities == saved));
+        List<CityEntity> saved = lightCityRepository.save(cities);
+        System.out.println(lightCityRepository.count());
+        System.out.println(String.format("cities==saved = %s", cities.size() == saved.size()));
         return saved.size();
     }
 
@@ -51,8 +50,16 @@ public class SQLightService {
         return saved.size();
     }
 
+    public List<CityEntity> getAllCitiesEntity() {
+        return lightCityRepository.findAll();
+    }
+
+    public List<StationEntity> getAllStationsEntity() {
+        return sqLightStationRepository.findAll();
+    }
+
     public List<CityDto> getAllCities() {
-        return toDTOList(sqLightCityRepository.findAll(), null, CityDto::new);
+        return toDTOList(lightCityRepository.findAll(), null, CityDto::new);
     }
 
     public List<StationDto> getAllStations() {
