@@ -9,27 +9,23 @@ import java.util.Objects;
 @Entity
 @Table(name = "NameOfStation")
 public class StationEntity {
-
     @Id
     @GeneratedValue
     @Column(name = "NameOfStationID")
     private long nameOfStationId;
-
     @Basic
     @Column(name = "RouteID")
     private long routeId;
-
     @Basic
     @Column(name = "Name")
     private String name;
-
     @Basic
     @Column(name = "NumberOfStation")
     private long numberOfStation;
-
     @Basic
     @Column(name = "Interval")
     private java.sql.Time interval;
+
 
     public StationEntity() {
     }
@@ -38,7 +34,7 @@ public class StationEntity {
         this.routeId = stationDto.getRouteId();
         this.name = stationDto.getName();
         this.numberOfStation = stationDto.getNumberOfStation();
-        this.interval = stationDto.getInterval();
+        this.interval = new Time(stationDto.getInterval().getTime());
     }
 
     public long getNameOfStationId() {
@@ -78,11 +74,11 @@ public class StationEntity {
 
 
     public java.sql.Time getInterval() {
-        return interval;
+        return new Time(interval.getTime());
     }
 
     public void setInterval(java.sql.Time interval) {
-        this.interval = interval;
+        this.interval = new Time(interval.getTime());
     }
 
     @Override
@@ -104,7 +100,7 @@ public class StationEntity {
 
     @Override
     public String toString() {
-        return "StationEntity { nameOfStationId = '" + nameOfStationId +
+        return this.getClass().getSimpleName() + " { nameOfStationId = '" + nameOfStationId +
                 "', routeId = '" + routeId +
                 "', name = '" + name +
                 "', numberOfStation = '" + numberOfStation +

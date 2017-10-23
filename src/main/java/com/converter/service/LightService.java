@@ -8,13 +8,14 @@ import com.converter.persistence.light.LightCityRepository;
 import com.converter.persistence.light.LightStationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 import static com.converter.util.Util.toDTOList;
 
 @Service
-//@Transactional(transactionManager = "lightJpaTransactionManager")
+@Transactional(transactionManager = "lightJpaTransactionManager")
 public class LightService {
     private final LightCityRepository lightCityRepository;
     private final LightStationRepository sqLightStationRepository;
@@ -30,6 +31,12 @@ public class LightService {
         System.out.println(lightCityRepository.count());
         System.out.println(String.format("cities==saved = %s", cities.size() == saved.size()));
         return saved.size();
+    }
+
+    public List<CityEntity> saveAllCitiesByDTO(List<CityDto> cities) {
+        List<CityEntity> cityEntities = toDTOList(cities, null, CityEntity::new);
+        List<CityEntity> saved = lightCityRepository.save(cityEntities);
+        return saved;
     }
 
     public int saveAllStations(List<StationEntity> stations) {

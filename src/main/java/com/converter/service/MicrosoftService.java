@@ -1,5 +1,6 @@
 package com.converter.service;
 
+import com.converter.dto.CityDto;
 import com.converter.dto.StationDto;
 import com.converter.model.CityEntity;
 import com.converter.model.StationEntity;
@@ -13,7 +14,6 @@ import java.util.List;
 import static com.converter.util.Util.toDTOList;
 
 @Service
-//@Transactional(transactionManager = "jpaTransactionManager")
 public class MicrosoftService {
     private final MicrosoftStationRepository microsoftStationRepository;
     private final MicrosoftCityRepository microsoftCityRepository;
@@ -28,8 +28,8 @@ public class MicrosoftService {
         return toDTOList(microsoftStationRepository.findAll(), null, StationDto::new);
     }
 
-    public List<StationDto> getAllCitiesDTO() {
-        return toDTOList(microsoftStationRepository.findAll(), null, StationDto::new);
+    public List<CityDto> getAllCitiesDTO() {
+        return toDTOList(getAllCityEntities(), null, CityDto::new);
     }
 
     public List<CityEntity> getAllCityEntities() {

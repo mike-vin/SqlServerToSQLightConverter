@@ -20,7 +20,7 @@ public class StationDto {
         this.routeId = nameOfStationEntity.getRouteId();
         this.name = nameOfStationEntity.getName();
         this.numberOfStation = nameOfStationEntity.getNumberOfStation();
-        this.interval = nameOfStationEntity.getInterval();
+        this.interval = new Time(nameOfStationEntity.getInterval().getTime());
     }
 
     public long getNameOfStationId() {
@@ -56,11 +56,11 @@ public class StationDto {
     }
 
     public Time getInterval() {
-        return interval;
+        return new Time(interval.getTime());
     }
 
     public void setInterval(Time interval) {
-        this.interval = interval;
+        this.interval = new Time(interval.getTime());
     }
 
     @Override

@@ -1,20 +1,28 @@
 package com.converter.model;
 
+import com.converter.dto.CityDto;
+
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 @Table(name = "City")
 public class CityEntity {
-
     @Id
     @GeneratedValue
     @Column(name = "CityID")
     private Integer id;
-
     @Basic
     @Column(name = "Name")
     private String name;
+
+
+    public CityEntity() {
+    }
+
+    public CityEntity(CityDto cityEntity) {
+        this.name = cityEntity.getName();
+    }
 
     public Integer getId() {
         return id;
@@ -48,6 +56,6 @@ public class CityEntity {
 
     @Override
     public String toString() {
-        return "CityDto { id = '" + id + "', name = '" + name + "' }";
+        return this.getClass().getSimpleName() + " { id = '" + id + "', name = '" + name + "' }";
     }
 }

@@ -23,13 +23,14 @@ import javax.sql.DataSource;
 @Component
 @EnableJpaRepositories(
         transactionManagerRef = "lightJpaTransactionManager",
+        entityManagerFactoryRef = "lightEntityManagerFactory",
         basePackages = {"com.converter.persistence.light"})
 @EnableTransactionManagement
 public class LightJpaConfig {
     @Value("${jpa.hibernate.dialect.sqlite}")
     private String dialect;
 
-    @Bean(name = "lightManagerFactory")
+    @Bean(name = "lightEntityManagerFactory")
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
         emf.setDataSource(getDataSource());
@@ -50,7 +51,7 @@ public class LightJpaConfig {
     }
 
     @Bean(name = "lightJpaTransactionManager")
-    public PlatformTransactionManager transactionManager(@Qualifier(value = "lightManagerFactory") EntityManagerFactory emf) {
+    public PlatformTransactionManager transactionManager(@Qualifier(value = "lightEntityManagerFactory") EntityManagerFactory emf) {
         return new JpaTransactionManager(emf);
     }
 
