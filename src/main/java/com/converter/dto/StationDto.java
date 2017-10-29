@@ -1,5 +1,6 @@
 package com.converter.dto;
 
+import com.converter.model.LIGHT.NameOfStationEntity;
 import com.converter.model.StationEntity;
 
 import java.sql.Time;
@@ -21,6 +22,14 @@ public class StationDto {
         this.name = nameOfStationEntity.getName();
         this.numberOfStation = nameOfStationEntity.getNumberOfStation();
         this.interval = new Time(nameOfStationEntity.getInterval().getTime());
+    }
+
+    public StationDto(NameOfStationEntity nameOfStationEntity) {
+        this.nameOfStationId = Long.parseLong(nameOfStationEntity.getNameOfStationId());
+        this.routeId = Long.parseLong(nameOfStationEntity.getRouteId());
+        this.name = nameOfStationEntity.getName();
+        this.numberOfStation = Long.parseLong(nameOfStationEntity.getNumberOfStation());
+        this.interval = Time.valueOf(nameOfStationEntity.getInterval());
     }
 
     public long getNameOfStationId() {

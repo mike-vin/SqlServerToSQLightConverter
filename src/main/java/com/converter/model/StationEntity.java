@@ -10,7 +10,6 @@ import java.util.Objects;
 @Table(name = "NameOfStation")
 public class StationEntity {
     @Id
-    @GeneratedValue
     @Column(name = "NameOfStationID")
     private long nameOfStationId;
     @Basic

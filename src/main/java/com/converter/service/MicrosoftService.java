@@ -8,12 +8,15 @@ import com.converter.persistence.microsoft.MicrosoftCityRepository;
 import com.converter.persistence.microsoft.MicrosoftStationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 import static com.converter.util.Util.toDTOList;
 
 @Service
+@Transactional(readOnly = true, isolation = Isolation.SERIALIZABLE)
 public class MicrosoftService {
     private final MicrosoftStationRepository microsoftStationRepository;
     private final MicrosoftCityRepository microsoftCityRepository;
@@ -23,6 +26,7 @@ public class MicrosoftService {
         this.microsoftCityRepository = microsoftCityRepository;
         this.microsoftStationRepository = nameOfMicrosoftStationRepository;
     }
+
 
     public List<StationDto> getAllStationsDTO() {
         return toDTOList(microsoftStationRepository.findAll(), null, StationDto::new);

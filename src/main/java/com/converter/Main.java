@@ -3,8 +3,6 @@ package com.converter;
 import com.converter.configs.RootConfig;
 import com.converter.dto.CityDto;
 import com.converter.dto.StationDto;
-import com.converter.model.CityEntity;
-import com.converter.model.StationEntity;
 import com.converter.service.LightService;
 import com.converter.service.MicrosoftService;
 import org.springframework.context.ApplicationContext;
@@ -14,8 +12,6 @@ import javax.swing.*;
 import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 public class Main {
     private static long timeStart;
@@ -69,30 +65,24 @@ public class Main {
 
     private static void printCities(ApplicationContext applicationContext) {
         MicrosoftService microsoftService = applicationContext.getBean(MicrosoftService.class);
-        List<CityEntity> allCityEntities = microsoftService.getAllCityEntities();
-        List<CityDto> allCitiesDTO = microsoftService.getAllCitiesDTO();
-
         LightService lightService = applicationContext.getBean(LightService.class);
-        lightService.saveAllCitiesByDTO(allCitiesDTO);
-        List<CityDto> allCitiesDto = lightService.getAllCities();
-        List<CityEntity> allCitiesEntity = lightService.getAllCitiesEntity();
 
-        System.out.printf("\n:: SERVER :: cities = %s", allCityEntities);
-        System.out.printf("\n:: LOCAL  :: cities = " + allCitiesEntity);
-        System.out.printf("\n:: LOCAL  :: cities = " + allCitiesDto);
+        // List<CityEntity> allCityEntities = microsoftService.getAllCityEntities();
+        //List<CityEntity> allCitiesEntity = lightService.getAllCitiesEntity();
+
+        List allCities = lightService.saveAllCitiesByDTO(microsoftService.getAllCitiesDTO());
+
+        System.out.printf("\n:: LOCAL  :: cities = " + allCities);
     }
 
     private static void printStation(ApplicationContext applicationContext) {
         MicrosoftService stationService = applicationContext.getBean(MicrosoftService.class);
         LightService lightService = applicationContext.getBean(LightService.class);
 
-        List<StationDto> stations = stationService.getAllStationsDTO();
-        IntStream.range(0, 10).mapToObj(i -> stations.get(i).getInterval()).forEach(System.out::println);
+        List stations = lightService.saveStationsByDTO(stationService.getAllStationsDTO());
 
-        //   int stationsSize = lightService.saveAllStationsByDTO(stations);
-
-        System.out.printf("\n:: SERVER :: stations size = %d\n", stations.size());
-        //   System.out.printf(":: LOCAL  :: stations size %d\n", stationsSize);
+        stations.forEach(System.out::println);
+        System.out.printf("\n:: LOCAL  :: stations size %d\n", stations.size());
     }
 
 }

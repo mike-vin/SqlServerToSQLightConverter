@@ -3,8 +3,10 @@ package com.converter.service;
 import com.converter.dto.CityDto;
 import com.converter.dto.StationDto;
 import com.converter.model.CityEntity;
+import com.converter.model.LIGHT.NameOfStationEntity;
 import com.converter.model.StationEntity;
 import com.converter.persistence.light.LightCityRepository;
+import com.converter.persistence.light.LightNameOfStationRepository;
 import com.converter.persistence.light.LightStationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,46 +17,53 @@ import java.util.List;
 import static com.converter.util.Util.toDTOList;
 
 @Service
-@Transactional(transactionManager = "lightJpaTransactionManager")
+@Transactional(transactionManager = "lightJpaTransactionManager"/*, isolation = Isolation.READ_UNCOMMITTED*/)
 public class LightService {
     private final LightCityRepository lightCityRepository;
     private final LightStationRepository sqLightStationRepository;
+    private final LightNameOfStationRepository nameOfStationRepository;
 
     @Autowired
-    public LightService(LightCityRepository sqLightRepository, LightStationRepository sqLightStationRepository) {
+    public LightService(LightCityRepository sqLightRepository, LightStationRepository sqLightStationRepository, LightNameOfStationRepository nameOfStationRepository) {
         this.lightCityRepository = sqLightRepository;
         this.sqLightStationRepository = sqLightStationRepository;
+        this.nameOfStationRepository = nameOfStationRepository;
     }
 
-    public int saveAllCities(List<CityEntity> cities) {
+    public List<CityDto> saveAllCities(List<CityEntity> cities) {
         List<CityEntity> saved = lightCityRepository.save(cities);
-        System.out.println(lightCityRepository.count());
-        System.out.println(String.format("cities==saved = %s", cities.size() == saved.size()));
-        return saved.size();
+        return toDTOList(saved, CityDto::new);
     }
 
-    public List<CityEntity> saveAllCitiesByDTO(List<CityDto> cities) {
+    public List<CityDto> saveAllCitiesByDTO(List<CityDto> cities) {
         List<CityEntity> cityEntities = toDTOList(cities, null, CityEntity::new);
         List<CityEntity> saved = lightCityRepository.save(cityEntities);
-        return saved;
+        return toDTOList(saved, CityDto::new);
     }
 
-    public int saveAllStations(List<StationEntity> stations) {
+    public List<StationDto> saveStationsByDTO(List<StationDto> cities) {
+        List<NameOfStationEntity> names = toDTOList(cities, null, NameOfStationEntity::new);
+        List<NameOfStationEntity> saved = nameOfStationRepository.save(names);
+        return toDTOList(saved, StationDto::new);
+    }
+
+    public List<StationDto> saveAllStations(List<StationEntity> stations) {
+
         System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~< SAVING >~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         List<StationEntity> saved = sqLightStationRepository.save(stations);
         System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~< SAVED >~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
-        return saved.size();
+        return toDTOList(saved, StationDto::new);
     }
 
-    public int saveAllStationsByDTO(List<StationDto> stations) {
-        List<StationEntity> stationEntityList = toDTOList(stations, null, StationEntity::new);
+    public List<StationDto> saveAllStationsByDTO(List<StationDto> stations) {
+        List<StationEntity> stationEntityList = toDTOList(stations, StationEntity::new);
 
         System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~< SAVING >~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         List<StationEntity> saved = sqLightStationRepository.save(stationEntityList);
         System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~< SAVED >~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
-        return saved.size();
+        return toDTOList(saved, StationDto::new);
     }
 
     public List<CityEntity> getAllCitiesEntity() {

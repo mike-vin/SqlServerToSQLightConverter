@@ -34,6 +34,13 @@ public class Util {
     }
 
 
+    public static <T, R> List<R> toDTOList(List<T> entities, Function<T, R> function) {
+        if (isNullOrEmptyList(entities)) {
+            return Collections.emptyList();
+        }
+        return entities.stream().map(function).collect(Collectors.toList());
+    }
+
     public static <T, R> List<R> toDTOList(List<T> entities, Comparator<T> comparator, Function<T, R> function) {
         if (isNullOrEmptyList(entities)) {
             return Collections.emptyList();

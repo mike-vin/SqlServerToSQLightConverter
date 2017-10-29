@@ -55,7 +55,6 @@
     <orderEntry type="library" name="Gradle: org.apache.httpcomponents:httpclient:4.3.6" level="project" />
     <orderEntry type="library" name="Gradle: javax.inject:javax.inject:1" level="project" />
     <orderEntry type="library" name="Gradle: com.microsoft.azure:adal4j:1.0.0" level="project" />
-    <orderEntry type="library" name="Gradle: commons-codec:commons-codec:1.10" level="project" />
     <orderEntry type="library" name="Gradle: commons-lang:commons-lang:2.6" level="project" />
     <orderEntry type="library" name="Gradle: com.sun.jersey:jersey-client:1.13" level="project" />
     <orderEntry type="library" name="Gradle: com.sun.jersey:jersey-json:1.13" level="project" />

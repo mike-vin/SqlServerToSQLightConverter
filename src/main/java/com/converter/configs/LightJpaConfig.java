@@ -46,7 +46,7 @@ public class LightJpaConfig {
         vendorAdapter.setShowSql(true);
         vendorAdapter.setDatabasePlatform(dialect);
         vendorAdapter.setGenerateDdl(true);
-        vendorAdapter.setPrepareConnection(false);
+      //  vendorAdapter.setPrepareConnection(true);
         return vendorAdapter;
     }
 
