@@ -1,68 +1,48 @@
 package com.converter.service;
 
-import com.converter.dto.CityDto;
-import com.converter.dto.StationDto;
-import com.converter.model.CityEntity;
-import com.converter.model.StationEntity;
-import com.converter.persistence.light.LightCityRepository;
-import com.converter.persistence.light.LightStationRepository;
+import com.converter.model.light.LightNameOfStationEntity;
+import com.converter.model.light.LightStartTimeEntity;
+import com.converter.model.microsoft.MicrosoftNameOfStationEntity;
+import com.converter.model.microsoft.MicrosoftStartTimeEntity;
+import com.converter.persistence.light.LightNameOfStationRepository;
+import com.converter.persistence.light.LightStartTimeRepository;
+import com.converter.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.converter.util.Util.toDTOList;
+import static com.converter.util.Util.convertList;
 
 @Service
-//@Transactional(transactionManager = "lightJpaTransactionManager")
+@Transactional(transactionManager = "lightJpaTransactionManager")
 public class LightService {
-    private final LightCityRepository lightCityRepository;
-    private final LightStationRepository sqLightStationRepository;
+    private final LightNameOfStationRepository nameOfStationRepository;
+    private final LightStartTimeRepository startTimeRepository;
 
     @Autowired
-    public LightService(LightCityRepository sqLightRepository, LightStationRepository sqLightStationRepository) {
-        this.lightCityRepository = sqLightRepository;
-        this.sqLightStationRepository = sqLightStationRepository;
+    public LightService(LightNameOfStationRepository nameOfStationRepository, LightStartTimeRepository startTimeRepository) {
+        this.nameOfStationRepository = nameOfStationRepository;
+        this.startTimeRepository = startTimeRepository;
     }
 
-    public int saveAllCities(List<CityEntity> cities) {
-        List<CityEntity> saved = lightCityRepository.save(cities);
-        System.out.println(lightCityRepository.count());
-        System.out.println(String.format("cities==saved = %s", cities.size() == saved.size()));
-        return saved.size();
+    public List<LightStartTimeEntity> saveStartTime(List<MicrosoftStartTimeEntity> microsoftStartTimeList) {
+        List<LightStartTimeEntity> timeEntities = Util.convertList(microsoftStartTimeList, LightStartTimeEntity::new);
+        return startTimeRepository.save(timeEntities);
     }
 
-    public int saveAllStations(List<StationEntity> stations) {
-        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~< SAVING >~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-        List<StationEntity> saved = sqLightStationRepository.save(stations);
-        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~< SAVED >~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-
-        return saved.size();
+    public List<LightNameOfStationEntity> saveStations(List<MicrosoftNameOfStationEntity> nameOfStationList) {
+        List<LightNameOfStationEntity> lightNameOfStations = Util.convertList(nameOfStationList, LightNameOfStationEntity::new);
+        return nameOfStationRepository.save(lightNameOfStations);
     }
 
-    public int saveAllStationsByDTO(List<StationDto> stations) {
-        List<StationEntity> stationEntityList = toDTOList(stations, null, StationEntity::new);
 
-        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~< SAVING >~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-        List<StationEntity> saved = sqLightStationRepository.save(stationEntityList);
-        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~< SAVED >~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-
-        return saved.size();
+    public List<LightNameOfStationEntity> getAllStations() {
+        return nameOfStationRepository.findAll();
     }
 
-    public List<CityEntity> getAllCitiesEntity() {
-        return lightCityRepository.findAll();
-    }
-
-    public List<StationEntity> getAllStationsEntity() {
-        return sqLightStationRepository.findAll();
-    }
-
-    public List<CityDto> getAllCities() {
-        return toDTOList(lightCityRepository.findAll(), null, CityDto::new);
-    }
-
-    public List<StationDto> getAllStations() {
-        return toDTOList(sqLightStationRepository.findAll(), null, StationDto::new);
+    public List<LightStartTimeEntity> getAllStartTime() {
+        return startTimeRepository.findAll();
     }
 }

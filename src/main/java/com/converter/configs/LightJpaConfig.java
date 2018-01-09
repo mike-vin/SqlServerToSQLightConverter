@@ -23,34 +23,37 @@ import javax.sql.DataSource;
 @Component
 @EnableJpaRepositories(
         transactionManagerRef = "lightJpaTransactionManager",
+        entityManagerFactoryRef = "lightEntityManagerFactory",
         basePackages = {"com.converter.persistence.light"})
 @EnableTransactionManagement
 public class LightJpaConfig {
     @Value("${jpa.hibernate.dialect.sqlite}")
     private String dialect;
+    @Value("${jpa.show-sql}")
+    private Boolean showSql;
 
-    @Bean(name = "lightManagerFactory")
+    @Bean(name = "lightEntityManagerFactory")
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
         emf.setDataSource(getDataSource());
         emf.setJpaVendorAdapter(getJpaVendorAdapter());
         emf.setPersistenceUnitName("com.converter.persistence.light");
-        emf.setPackagesToScan("com.converter.model");
+        emf.setPackagesToScan("com.converter.model.light");
         return emf;
     }
 
     private JpaVendorAdapter getJpaVendorAdapter() {
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         vendorAdapter.setDatabase(Database.DEFAULT);
-        vendorAdapter.setShowSql(true);
+        vendorAdapter.setShowSql(showSql);
         vendorAdapter.setDatabasePlatform(dialect);
         vendorAdapter.setGenerateDdl(true);
-        vendorAdapter.setPrepareConnection(false);
+        //  vendorAdapter.setPrepareConnection(true);
         return vendorAdapter;
     }
 
     @Bean(name = "lightJpaTransactionManager")
-    public PlatformTransactionManager transactionManager(@Qualifier(value = "lightManagerFactory") EntityManagerFactory emf) {
+    public PlatformTransactionManager transactionManager(@Qualifier(value = "lightEntityManagerFactory") EntityManagerFactory emf) {
         return new JpaTransactionManager(emf);
     }
 

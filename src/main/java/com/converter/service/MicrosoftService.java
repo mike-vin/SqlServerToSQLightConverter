@@ -1,42 +1,33 @@
 package com.converter.service;
 
-import com.converter.dto.StationDto;
-import com.converter.model.CityEntity;
-import com.converter.model.StationEntity;
-import com.converter.persistence.microsoft.MicrosoftCityRepository;
-import com.converter.persistence.microsoft.MicrosoftStationRepository;
+import com.converter.model.microsoft.MicrosoftNameOfStationEntity;
+import com.converter.model.microsoft.MicrosoftStartTimeEntity;
+import com.converter.persistence.microsoft.MicrosoftNameOfStationRepository;
+import com.converter.persistence.microsoft.MicrosoftStartTimeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.converter.util.Util.toDTOList;
-
 @Service
-//@Transactional(transactionManager = "jpaTransactionManager")
+@Transactional(transactionManager = "microsoftTransactionManager", readOnly = true)
 public class MicrosoftService {
-    private final MicrosoftStationRepository microsoftStationRepository;
-    private final MicrosoftCityRepository microsoftCityRepository;
+    private final MicrosoftNameOfStationRepository stationRepository;
+    private final MicrosoftStartTimeRepository startTimeRepository;
 
     @Autowired
-    public MicrosoftService(MicrosoftCityRepository microsoftCityRepository, MicrosoftStationRepository nameOfMicrosoftStationRepository) {
-        this.microsoftCityRepository = microsoftCityRepository;
-        this.microsoftStationRepository = nameOfMicrosoftStationRepository;
+    public MicrosoftService(MicrosoftNameOfStationRepository nameOfMicrosoftStationRepository,
+                            MicrosoftStartTimeRepository startTimeRepository) {
+        this.stationRepository = nameOfMicrosoftStationRepository;
+        this.startTimeRepository = startTimeRepository;
     }
 
-    public List<StationDto> getAllStationsDTO() {
-        return toDTOList(microsoftStationRepository.findAll(), null, StationDto::new);
+    public List<MicrosoftNameOfStationEntity> getAllStations() {
+        return stationRepository.findAll();
     }
 
-    public List<StationDto> getAllCitiesDTO() {
-        return toDTOList(microsoftStationRepository.findAll(), null, StationDto::new);
-    }
-
-    public List<CityEntity> getAllCityEntities() {
-        return microsoftCityRepository.findAll();
-    }
-
-    public List<StationEntity> getAllStationsEntities() {
-        return microsoftStationRepository.findAll();
+    public List<MicrosoftStartTimeEntity> getAllStartTime() {
+        return startTimeRepository.findAll();
     }
 }

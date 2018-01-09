@@ -1,6 +1,7 @@
 package com.converter.dto;
 
-import com.converter.model.StationEntity;
+import com.converter.model.light.LightNameOfStationEntity;
+import com.converter.model.microsoft.MicrosoftNameOfStationEntity;
 
 import java.sql.Time;
 import java.util.Objects;
@@ -15,12 +16,12 @@ public class StationDto {
     public StationDto() {
     }
 
-    public StationDto(StationEntity nameOfStationEntity) {
-        this.nameOfStationId = nameOfStationEntity.getNameOfStationId();
-        this.routeId = nameOfStationEntity.getRouteId();
-        this.name = nameOfStationEntity.getName();
-        this.numberOfStation = nameOfStationEntity.getNumberOfStation();
-        this.interval = nameOfStationEntity.getInterval();
+    public StationDto(MicrosoftNameOfStationEntity nameOfMicrosoftNameOfStationEntity) {
+        this.nameOfStationId = nameOfMicrosoftNameOfStationEntity.getId();
+        this.routeId = nameOfMicrosoftNameOfStationEntity.getRouteId();
+        this.name = nameOfMicrosoftNameOfStationEntity.getName();
+        this.numberOfStation = nameOfMicrosoftNameOfStationEntity.getNumberOfStation();
+        this.interval = new Time(nameOfMicrosoftNameOfStationEntity.getInterval().getTime());
     }
 
     public long getNameOfStationId() {
@@ -56,11 +57,11 @@ public class StationDto {
     }
 
     public Time getInterval() {
-        return interval;
+        return new Time(interval.getTime());
     }
 
     public void setInterval(Time interval) {
-        this.interval = interval;
+        this.interval = new Time(interval.getTime());
     }
 
     @Override

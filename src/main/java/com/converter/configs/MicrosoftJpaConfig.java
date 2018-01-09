@@ -19,7 +19,8 @@ import javax.persistence.EntityManagerFactory;
 
 @Configuration
 @EnableJpaRepositories(
-        transactionManagerRef = "jpaTransactionManager",
+        transactionManagerRef = "microsoftTransactionManager",
+        entityManagerFactoryRef = "microsoftManagerFactory",
         basePackages = {"com.converter.persistence.microsoft"})
 @EnableTransactionManagement
 public class MicrosoftJpaConfig {
@@ -39,28 +40,28 @@ public class MicrosoftJpaConfig {
     }
 
     @Primary
-    @Bean(name = "entityManagerFactory")
+    @Bean(name = "microsoftManagerFactory")
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
         emf.setDataSource(dataSourceBuilder.getDataSource());
         emf.setJpaVendorAdapter(getJpaVendorAdapter());
         emf.setPersistenceUnitName("com.converter.persistence.microsoft");
-        emf.setPackagesToScan("com.converter.model");
+        emf.setPackagesToScan("com.converter.model.microsoft");
         return emf;
     }
 
     private JpaVendorAdapter getJpaVendorAdapter() {
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         vendorAdapter.setDatabase(Database.valueOf(vendorDatabase));
-        // vendorAdapter.setShowSql(showSql);
+        vendorAdapter.setShowSql(showSql);
         vendorAdapter.setDatabasePlatform(platformDialect);
         vendorAdapter.setGenerateDdl(generateDdl);
         return vendorAdapter;
     }
 
     @Primary
-    @Bean(name = "jpaTransactionManager")
-    public PlatformTransactionManager transactionManager(@Qualifier(value = "entityManagerFactory") EntityManagerFactory emf) {
+    @Bean(name = "microsoftTransactionManager")
+    public PlatformTransactionManager transactionManager(@Qualifier(value = "microsoftManagerFactory") EntityManagerFactory emf) {
         return new JpaTransactionManager(emf);
     }
 }

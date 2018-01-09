@@ -57,8 +57,6 @@ class DataSourceBuilder {
         dataSource.setURL(chmelUrl);
         dataSource.setUser(chmelUser);
         dataSource.setPassword(chmelPassword);
-        System.out.println("Description: " + dataSource.getDescription());
-        System.out.println("DatabaseName: " + dataSource.getDatabaseName());
         System.out.println(cityType + " DataSource created");
         return dataSource;
     }
@@ -80,7 +78,6 @@ class DataSourceBuilder {
     }
 
     DataSource getDataSource() {
-        System.out.println("SQ_LIGHT:");
         switch (cityType) {
             case VINNITSA:
                 return getVinDataSource();
