@@ -1,7 +1,7 @@
 package com.converter.dto;
 
-import com.converter.model.LIGHT.NameOfStationEntity;
-import com.converter.model.StationEntity;
+import com.converter.model.light.LightNameOfStationEntity;
+import com.converter.model.microsoft.MicrosoftNameOfStationEntity;
 
 import java.sql.Time;
 import java.util.Objects;
@@ -16,20 +16,12 @@ public class StationDto {
     public StationDto() {
     }
 
-    public StationDto(StationEntity nameOfStationEntity) {
-        this.nameOfStationId = nameOfStationEntity.getNameOfStationId();
-        this.routeId = nameOfStationEntity.getRouteId();
-        this.name = nameOfStationEntity.getName();
-        this.numberOfStation = nameOfStationEntity.getNumberOfStation();
-        this.interval = new Time(nameOfStationEntity.getInterval().getTime());
-    }
-
-    public StationDto(NameOfStationEntity nameOfStationEntity) {
-        this.nameOfStationId = Long.parseLong(nameOfStationEntity.getNameOfStationId());
-        this.routeId = Long.parseLong(nameOfStationEntity.getRouteId());
-        this.name = nameOfStationEntity.getName();
-        this.numberOfStation = Long.parseLong(nameOfStationEntity.getNumberOfStation());
-        this.interval = Time.valueOf(nameOfStationEntity.getInterval());
+    public StationDto(MicrosoftNameOfStationEntity nameOfMicrosoftNameOfStationEntity) {
+        this.nameOfStationId = nameOfMicrosoftNameOfStationEntity.getId();
+        this.routeId = nameOfMicrosoftNameOfStationEntity.getRouteId();
+        this.name = nameOfMicrosoftNameOfStationEntity.getName();
+        this.numberOfStation = nameOfMicrosoftNameOfStationEntity.getNumberOfStation();
+        this.interval = new Time(nameOfMicrosoftNameOfStationEntity.getInterval().getTime());
     }
 
     public long getNameOfStationId() {

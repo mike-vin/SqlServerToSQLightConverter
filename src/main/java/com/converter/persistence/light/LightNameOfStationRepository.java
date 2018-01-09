@@ -1,8 +1,7 @@
 package com.converter.persistence.light;
 
-import com.converter.model.LIGHT.NameOfStationEntity;
-import com.converter.model.StationEntity;
+import com.converter.model.light.LightNameOfStationEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface LightNameOfStationRepository extends JpaRepository<NameOfStationEntity, Integer> {
+public interface LightNameOfStationRepository extends JpaRepository<LightNameOfStationEntity, Integer> {
 }

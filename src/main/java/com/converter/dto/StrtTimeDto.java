@@ -1,11 +1,8 @@
-package com.converter.model.LIGHT;
+package com.converter.dto;
 
-import javax.persistence.*;
 import java.util.Objects;
 
-@Entity
-@Table(name = "start_time", schema = "main")
-public class StartTimeEntity {
+public class StrtTimeDto {
     private int id;
     private int routeId;
     private String time;
@@ -18,9 +15,6 @@ public class StartTimeEntity {
     private int startTimeId;
     private String underline;
 
-    @Id
-    @GeneratedValue
-    @Column(name = "_id", nullable = false)
     public int getId() {
         return id;
     }
@@ -29,8 +23,6 @@ public class StartTimeEntity {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "RouteID", nullable = true)
     public int getRouteId() {
         return routeId;
     }
@@ -39,8 +31,6 @@ public class StartTimeEntity {
         this.routeId = routeId;
     }
 
-    @Basic
-    @Column(name = "Time", nullable = true)
     public String getTime() {
         return time;
     }
@@ -49,8 +39,6 @@ public class StartTimeEntity {
         this.time = time;
     }
 
-    @Basic
-    @Column(name = "Weekend", nullable = true)
     public String getWeekend() {
         return weekend;
     }
@@ -59,8 +47,6 @@ public class StartTimeEntity {
         this.weekend = weekend;
     }
 
-    @Basic
-    @Column(name = "Number", nullable = true)
     public int getNumber() {
         return number;
     }
@@ -69,8 +55,6 @@ public class StartTimeEntity {
         this.number = number;
     }
 
-    @Basic
-    @Column(name = "WinterTable", nullable = true)
     public String getWinterTable() {
         return winterTable;
     }
@@ -79,8 +63,6 @@ public class StartTimeEntity {
         this.winterTable = winterTable;
     }
 
-    @Basic
-    @Column(name = "InDepot", nullable = true)
     public int getInDepot() {
         return inDepot;
     }
@@ -89,8 +71,6 @@ public class StartTimeEntity {
         this.inDepot = inDepot;
     }
 
-    @Basic
-    @Column(name = "ShowNumber", nullable = true)
     public int getShowNumber() {
         return showNumber;
     }
@@ -99,8 +79,6 @@ public class StartTimeEntity {
         this.showNumber = showNumber;
     }
 
-    @Basic
-    @Column(name = "HideNumber", nullable = true)
     public int getHideNumber() {
         return hideNumber;
     }
@@ -109,8 +87,6 @@ public class StartTimeEntity {
         this.hideNumber = hideNumber;
     }
 
-    @Basic
-    @Column(name = "StartTimeID", nullable = true)
     public int getStartTimeId() {
         return startTimeId;
     }
@@ -119,8 +95,6 @@ public class StartTimeEntity {
         this.startTimeId = startTimeId;
     }
 
-    @Basic
-    @Column(name = "Underline", nullable = true)
     public String getUnderline() {
         return underline;
     }
@@ -133,7 +107,7 @@ public class StartTimeEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        StartTimeEntity that = (StartTimeEntity) o;
+        StrtTimeDto that = (StrtTimeDto) o;
         return id == that.id &&
                 routeId == that.routeId &&
                 number == that.number &&
@@ -149,6 +123,23 @@ public class StartTimeEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, routeId, time, weekend, number, winterTable, inDepot, showNumber, hideNumber, startTimeId, underline);
+        return Objects.hash(id, routeId, startTimeId);
+    }
+
+    @Override
+    public String toString() {
+        return "StrtTimeDto{" +
+                "id=" + id +
+                ", routeId=" + routeId +
+                ", time='" + time + '\'' +
+                ", weekend='" + weekend + '\'' +
+                ", number=" + number +
+                ", winterTable='" + winterTable + '\'' +
+                ", inDepot=" + inDepot +
+                ", showNumber=" + showNumber +
+                ", hideNumber=" + hideNumber +
+                ", startTimeId=" + startTimeId +
+                ", underline='" + underline + '\'' +
+                '}';
     }
 }

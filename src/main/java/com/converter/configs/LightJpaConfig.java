@@ -29,6 +29,8 @@ import javax.sql.DataSource;
 public class LightJpaConfig {
     @Value("${jpa.hibernate.dialect.sqlite}")
     private String dialect;
+    @Value("${jpa.show-sql}")
+    private Boolean showSql;
 
     @Bean(name = "lightEntityManagerFactory")
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
@@ -36,17 +38,17 @@ public class LightJpaConfig {
         emf.setDataSource(getDataSource());
         emf.setJpaVendorAdapter(getJpaVendorAdapter());
         emf.setPersistenceUnitName("com.converter.persistence.light");
-        emf.setPackagesToScan("com.converter.model");
+        emf.setPackagesToScan("com.converter.model.light");
         return emf;
     }
 
     private JpaVendorAdapter getJpaVendorAdapter() {
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         vendorAdapter.setDatabase(Database.DEFAULT);
-        vendorAdapter.setShowSql(true);
+        vendorAdapter.setShowSql(showSql);
         vendorAdapter.setDatabasePlatform(dialect);
         vendorAdapter.setGenerateDdl(true);
-      //  vendorAdapter.setPrepareConnection(true);
+        //  vendorAdapter.setPrepareConnection(true);
         return vendorAdapter;
     }
 

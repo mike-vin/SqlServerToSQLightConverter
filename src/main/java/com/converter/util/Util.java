@@ -1,7 +1,5 @@
 package com.converter.util;
 
-import com.converter.dto.CityDto;
-import com.converter.model.CityEntity;
 import org.slf4j.Logger;
 
 import javax.swing.*;
@@ -34,14 +32,14 @@ public class Util {
     }
 
 
-    public static <T, R> List<R> toDTOList(List<T> entities, Function<T, R> function) {
+    public static <T, R> List<R> convertList(List<T> entities, Function<T, R> function) {
         if (isNullOrEmptyList(entities)) {
             return Collections.emptyList();
         }
         return entities.stream().map(function).collect(Collectors.toList());
     }
 
-    public static <T, R> List<R> toDTOList(List<T> entities, Comparator<T> comparator, Function<T, R> function) {
+    public static <T, R> List<R> convertList(List<T> entities, Comparator<T> comparator, Function<T, R> function) {
         if (isNullOrEmptyList(entities)) {
             return Collections.emptyList();
         }
@@ -51,7 +49,7 @@ public class Util {
         return entities.stream().sorted(comparator).map(function).collect(Collectors.toList());
     }
 
-    public static <T, R> List<R> toDTOList(List<T> entities, Comparator<T> comparator, Function<T, R> function, Logger logger, String message) {
+    public static <T, R> List<R> convertList(List<T> entities, Comparator<T> comparator, Function<T, R> function, Logger logger, String message) {
         if (isNullOrEmptyList(entities)) {
             logger.info(message);
             return Collections.emptyList();

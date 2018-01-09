@@ -46,7 +46,7 @@ public class MicrosoftJpaConfig {
         emf.setDataSource(dataSourceBuilder.getDataSource());
         emf.setJpaVendorAdapter(getJpaVendorAdapter());
         emf.setPersistenceUnitName("com.converter.persistence.microsoft");
-        emf.setPackagesToScan("com.converter.model");
+        emf.setPackagesToScan("com.converter.model.microsoft");
         return emf;
     }
 

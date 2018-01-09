@@ -1,8 +1,8 @@
 package com.converter;
 
 import com.converter.configs.RootConfig;
-import com.converter.dto.CityDto;
-import com.converter.dto.StationDto;
+import com.converter.model.light.LightStartTimeEntity;
+import com.converter.model.microsoft.MicrosoftStartTimeEntity;
 import com.converter.service.LightService;
 import com.converter.service.MicrosoftService;
 import org.springframework.context.ApplicationContext;
@@ -24,17 +24,20 @@ public class Main {
     public static CityType CITY_TYPE;
 
     public static void main(String[] args) throws InterruptedException {
-
         setParams();
+
 
         ApplicationContext applicationContext = new AnnotationConfigApplicationContext(RootConfig.class);
 
-        printCities(applicationContext);
+
+        printStartTime(applicationContext);
+
+        printRoute(applicationContext);
 
         printStation(applicationContext);
 
-        exit();
 
+        exit();
     }
 
     private static void setParams() {
@@ -51,8 +54,26 @@ public class Main {
         System.out.printf("ABSOLUTE_PATH = %s\nDB_NAME = %s\nSQLight_URL = %s\n", ABSOLUTE_PATH, DB_NAME, SQLight_URL);
     }
 
+    private static void printStartTime(ApplicationContext applicationContext) {
+        MicrosoftService microsoftService = applicationContext.getBean(MicrosoftService.class);
+        LightService lightService = applicationContext.getBean(LightService.class);
+
+        List<MicrosoftStartTimeEntity> allStartTime = microsoftService.getAllStartTime();
+
+        lightService.saveStartTime(allStartTime);
+
+        List<LightStartTimeEntity> startTime = lightService.getAllStartTime();
+        System.out.println("Start Time :: SIZE = " + startTime.size());
+        startTime.forEach(System.out::println);
+    }
+
+    private static void printRoute(ApplicationContext applicationContext) {
+
+    }
+
     private static void exit() {
         long time = (new Date().getTime() - timeStart) / 1000;
+        System.out.println("\nВремя: " + time + " сек\n");
         JOptionPane.showMessageDialog(null, "Исполнено, мой повелитель!\nВремя: " + time + " сек");
         System.exit(0);
     }
@@ -63,23 +84,12 @@ public class Main {
         return CityType.values()[city];
     }
 
-    private static void printCities(ApplicationContext applicationContext) {
-        MicrosoftService microsoftService = applicationContext.getBean(MicrosoftService.class);
-        LightService lightService = applicationContext.getBean(LightService.class);
-
-        // List<CityEntity> allCityEntities = microsoftService.getAllCityEntities();
-        //List<CityEntity> allCitiesEntity = lightService.getAllCitiesEntity();
-
-        List allCities = lightService.saveAllCitiesByDTO(microsoftService.getAllCitiesDTO());
-
-        System.out.printf("\n:: LOCAL  :: cities = " + allCities);
-    }
 
     private static void printStation(ApplicationContext applicationContext) {
         MicrosoftService stationService = applicationContext.getBean(MicrosoftService.class);
         LightService lightService = applicationContext.getBean(LightService.class);
 
-        List stations = lightService.saveStationsByDTO(stationService.getAllStationsDTO());
+        List stations = lightService.saveStations(stationService.getAllStations());
 
         stations.forEach(System.out::println);
         System.out.printf("\n:: LOCAL  :: stations size %d\n", stations.size());

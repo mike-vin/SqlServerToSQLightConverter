@@ -1,4 +1,4 @@
-package com.converter.model.LIGHT;
+package com.converter.model.light;
 
 import javax.persistence.*;
 import java.util.Objects;

@@ -1,4 +1,4 @@
-package com.converter.model;
+package com.converter.model.microsoft;
 
 import com.converter.dto.StationDto;
 
@@ -8,10 +8,10 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "NameOfStation")
-public class StationEntity {
+public class MicrosoftNameOfStationEntity {
     @Id
     @Column(name = "NameOfStationID")
-    private long nameOfStationId;
+    private long id;
     @Basic
     @Column(name = "RouteID")
     private long routeId;
@@ -26,22 +26,22 @@ public class StationEntity {
     private java.sql.Time interval;
 
 
-    public StationEntity() {
+    public MicrosoftNameOfStationEntity() {
     }
 
-    public StationEntity(StationDto stationDto) {
+    public MicrosoftNameOfStationEntity(StationDto stationDto) {
         this.routeId = stationDto.getRouteId();
         this.name = stationDto.getName();
         this.numberOfStation = stationDto.getNumberOfStation();
         this.interval = new Time(stationDto.getInterval().getTime());
     }
 
-    public long getNameOfStationId() {
-        return nameOfStationId;
+    public long getId() {
+        return id;
     }
 
-    public void setNameOfStationId(long nameOfStationId) {
-        this.nameOfStationId = nameOfStationId;
+    public void setId(long id) {
+        this.id = id;
     }
 
 
@@ -84,8 +84,8 @@ public class StationEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        StationEntity that = (StationEntity) o;
-        return nameOfStationId == that.nameOfStationId &&
+        MicrosoftNameOfStationEntity that = (MicrosoftNameOfStationEntity) o;
+        return id == that.id &&
                 routeId == that.routeId &&
                 numberOfStation == that.numberOfStation &&
                 Objects.equals(name, that.name) &&
@@ -94,12 +94,12 @@ public class StationEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(nameOfStationId, routeId, name, numberOfStation, interval);
+        return Objects.hash(id, routeId);
     }
 
     @Override
     public String toString() {
-        return this.getClass().getSimpleName() + " { nameOfStationId = '" + nameOfStationId +
+        return this.getClass().getSimpleName() + " { id = '" + id +
                 "', routeId = '" + routeId +
                 "', name = '" + name +
                 "', numberOfStation = '" + numberOfStation +
